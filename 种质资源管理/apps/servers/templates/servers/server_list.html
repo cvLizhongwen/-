@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}种子信息管理 - 种子列表{% endblock %}
+{% block custome_css %}{% endblock %}
+{% block content %}
+    <!--style="overflow:auto"-->
+    <!--    <div class="content">-->
+    <!--style="height:200px; overflow:scroll"-->
+    <div class="panel-body">
+        <p>种子信息列表</p>
+        <div class="form-class">
+            <form action="" method="get">
+                <input id="search" class="form-text" type="text" placeholder="搜索..." name="search"
+                       value="{% if search %}{{ search }}{% endif %}"/>
+                <button class="form-submit" type="submit">
+                    <i class='fa fa-search' aria-hidden='true'></i>
+                </button>
+            </form>
+        </div>
+        {% if request.user.isadmin == '1' or request.user.is_superuser == 1 %}
+            <button class="button-insert" id="btn_add">添加种子</button>
+            <div style="width: 270px;height: 30px;display: inline;float: left;margin-left: 10px">
+                <form class="form-inline" method="post" enctype="multipart/form-data" action="{% url 'servers:server_import' %}">
+                    {% csrf_token %}
+                    <div class="form-group" style="width: 150px">
+                        <input name="exc" type="file" id="exampleInputFile" style="width: 200px">
+                    </div>
+                    <button style="width: 100px;margin: 0 5px;height: 30px;text-align: center;background: rgba(82, 183, 109, 1);color: #fff;border-radius: 10px;">
+                        批量导入
+                    </button>
+                </form>
+            </div>
+            <button class="button-insert" id="btn_export_list">导出列表</button>
+        {% endif %}
+        <br/><br/>
+        <table class="table-list">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>种子类型</th>
+{#                <th>种子ID</th>#}
+                <th>种子编号</th>
+                <th>种子名称</th>
+                <th>种中文名</th>
+                <!--                    <th>种拉丁名</th>-->
+                <th>属中文名</th>
+                <!--                    <th>属拉丁名</th>-->
+                <th>科中文名</th>
+                <!--                    <th>科拉丁名</th>-->
+                <th>采集年份</th>
+                <th>采集地址</th>
+
+                <th>抗旱性</th>
+                <th>抗寒性</th>
+                <th>耐盐性</th>
+                <th>耐霜冻性</th>
+                <th>耐热性性</th>
+                <th>抗虫害性</th>
+                <th>抗病性</th>
+                <th>易感病性</th>
+                <th>根系类性</th>
+
+                <th>茎状</th>
+                <th>地下茎</th>
+                <th>叶的类型</th>
+                <th>叶序</th>
+                <th>脉序</th>
+                <th>叶片形状</th>
+                <th>花序</th>
+                <th>果实类型</th>
+
+                <!--                    <th>是否有父代</th>-->
+                <!--                    <th>父代信息</th>-->
+                <!--                    <th>是否有子代</th>-->
+                <!--                    <th>子代信息</th>-->
+
+                <th>存放地址</th>
+                <th>相关信息描述</th>
+                <th>种子现存重量</th>
+                <th>管理人员</th>
+                <th>所在状况</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for server in p_servers.object_list %}
+                <tr>
+                    <td>{{ forloop.counter|add:start }}</td>
+                    <!--{#                        <td>{{ server.id }}</td>#}-->
+                    {% if request.user.isadmin == '1' or request.user.is_superuser == 1 %}
+                        <td><a href="{% url 'servers:server_detail' server.id %}">{{ server.Gtype }}</a></td>
+                    {% else %}
+                        <td>{{ server.Gtype }}</td>
+                    {% endif %}
+{#                    <td>{{ server.id }}</td>#}
+                    <td>{{ server.Gnumber }}</td>
+                    <td>{{ server.Gname }}</td>
+                    <!--                        <td>{{ server.Gnamel }}</td>-->
+                    <td>{{ server.Gz }}</td>
+                    <!--                        <td>{{ server.Gzl }}</td>-->
+                    <td>{{ server.Gs }}</td>
+                    <!--                        <td>{{ server.Gsl }}</td>-->
+                    <td>{{ server.Gke }}</td>
+                    <!--                        <td>{{ server.Gkel }}</td>-->
+                    <td>{{ server.Gyear }}</td>
+                    <td>{{ server.Gaddress }}</td>
+
+                    <td>{{ server.Gdrought }}</td>
+                    <td>{{ server.Gcold }}</td>
+                    <td>{{ server.Gsalt }}</td>
+                    <td>{{ server.Gfrost }}</td>
+                    <td>{{ server.Gheat }}</td>
+                    <td>{{ server.Ginseck }}</td>
+                    <td>{{ server.Gdisease }}</td>
+                    <td>{{ server.predisposingType }}</td>
+                    <td>{{ server.rootType }}</td>
+                    <td>{{ server.stem }}</td>
+                    <td>{{ server.understem }}</td>
+                    <td>{{ server.leafType }}</td>
+                    <td>{{ server.phyllotaxis }}</td>
+                    <td>{{ server.vein }}</td>
+                    <td>{{ server.leafShape }}</td>
+                    <td>{{ server.anthotaxy }}</td>
+                    <td>{{ server.fruitType }}</td>
+
+
+                    <td>{{ server.ipaddress }}</td>
+                    <td>{{ server.description }}</td>
+
+                    <td>{{ server.zcnumber }}</td>
+                    <td>{{ server.owner.username }}</td>
+                    <td>{{ server.undernet }}</td>
+                    <td>
+                        <div class="more-text">{{ server.comment }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="page">
+            <ul class="pagination">
+                {% if p_servers.has_previous %}
+                    <li><a href="?{{ p_servers.previous_page_number.querystring }}">&laquo;</a></li>
+                {% endif %}
+                {% for page in p_servers.pages %}
+                    {% if page %}
+                        {% ifequal page p_servers.number %}
+                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+{#                            <a href="?{{ page.querystring }}"#}
+{#                               style="background-color: #5cb85c;padding: 6px 5px">{{ page }}</a>#}
+                        {% else %}
+                            <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                        {% endifequal %}
+                    {% else %}
+                        <li>...</li>
+                    {% endif %}
+                {% endfor %}
+                {% if p_servers.has_next %}
+                    <li><a href="?{{ p_servers.next_page_number.querystring }}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block custome_js %}
+    <script>
+        var btn_server_add = document.getElementById("btn_add");
+        btn_server_add.onclick = function () {
+            location.href = "{% url 'servers:server_add' %}";
+        };
+
+        var btn_export_list = document.getElementById("btn_export_list");
+        btn_export_list.onclick = function () {
+            var search = document.getElementById("search").value;
+            var url = "{% url 'servers:server_export' %}";
+            location.href = url + '?search=' + search;
+        }
+
+
+    </script>
+{% endblock %}

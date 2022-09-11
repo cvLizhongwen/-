@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}种子信息管理 - 首页{% endblock %}
+{% block custome_css %}
+    <link rel="stylesheet" href="{% static 'servers/css/index.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="table-left">
+            <p>种子信息统计</p>
+            <br/><br/>
+            <table class="table-list">
+                <thead>
+                    <tr>
+                        <th class="table-line">序号</th>
+                        <th>种子类型</th>
+                        <th class="table-line">数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Gtype_group in Gtype_groups %}
+                        <tr>
+                            <td class="table-line">{{ forloop.counter }}</td>
+                            <td>{{ Gtype_group.Gtype__Gtype }}</td>
+                            <td class="table-line">{{ Gtype_group.Gtype_num }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="table-line" colspan="2">合计</td>
+                        <td class="table-line">{{ total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/><br/>
+        </div>
+    </div>
+{% endblock %}

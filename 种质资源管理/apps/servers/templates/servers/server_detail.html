@@ -1,0 +1,414 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}种子信息管理 - 种子信息详情{% endblock %}
+{% block custome_css %}
+    <link rel="stylesheet" href="{% static 'servers/css/server-add.css' %}">
+    <link rel="stylesheet" href="{% static 'servers/css/server-detail.css' %}">
+{% endblock %}
+{% block content %}
+    {% if server %}
+        <div class="content">
+            <p class="content-note1">修改种子信息<span class="content-note2"> (标注为*为必填项)</span></p>
+            <div style="clear:both"></div>
+            <form class="form-table" action="{% url 'servers:server_modify' %}" method="post">
+                <input type="hidden" id="server_id" name="server_id" value="{{ server.id }}"/>
+                <div class="form-list">
+                    <span>*种子类型</span>
+                    <select {% if server_form.errors.Gtype %}class="input-error"{% endif %} name="Gtype">
+                        {% for server_type in server_types %}
+                            <option value="{{ server_type.id }}"
+                                    {% ifequal server.Gtype.id server_type.id %}selected{% endifequal %}>{{ server_type.Gtype }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span>种子编号</span><input {% if server_form.errors.Gnumber %}class="input-error"{% endif %}
+                                            type="text" name="Gnumber" value="{{ server.Gnumber }}"
+                                            placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>种子名称</span><input {% if server_form.errors.Gname %}class="input-error"{% endif %} type="text"
+                                            name="Gname" value="{{ server.Gname }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>种名</span><input {% if server_form.errors.Gz %}class="input-error"{% endif %} type="text"
+                                          name="Gz" value="{{ server.Gz }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>属名</span><input {% if server_form.errors.Gs %}class="input-error"{% endif %} type="text"
+                                          name="Gs" value="{{ server.Gs }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>科名</span><input {% if server_form.errors.Gke %}class="input-error"{% endif %} type="text"
+                                          name="Gke" value="{{ server.Gke }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>采集时间</span><input {% if server_form.errors.Gyear %}class="input-error"{% endif %} type="text"
+                                            name="Gyear" value="{{ server.Gyear }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>采集地</span><input {% if server_form.errors.Gaddress %}class="input-error"{% endif %}
+                                           type="text" name="Gaddress" value="{{ server.Gaddress }}"
+                                           placeholder="不超过50个字符"/>
+                </div>
+
+                <div class="form-list">
+                    <span>抗旱性</span><input {% if server_form.errors.Gdrought %}class="input-error"{% endif %}
+                                           type="text" name="Gdrought" value="{{ server.Gdrought }}"
+                                           placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>抗寒性</span><input {% if server_form.errors.Gcold %}class="input-error"{% endif %} type="text"
+                                           name="Gcold" value="{{ server.Gcold }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>耐盐性</span><input {% if server_form.errors.Gsalt %}class="input-error"{% endif %} type="text"
+                                           name="Gsalt" value="{{ server.Gsalt }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>耐霜冻性</span><input {% if server_form.errors.Gfrost %}class="input-error"{% endif %} type="text"
+                                            name="Gfrost" value="{{ server.Gfrost }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>耐热性</span><input {% if server_form.errors.Gheat %}class="input-error"{% endif %} type="text"
+                                           name="Gheat" value="{{ server.Gheat }}" placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>抗虫害性</span><input {% if server_form.errors.Ginseck %}class="input-error"{% endif %}
+                                            type="text" name="Ginseck" value="{{ server.Ginseck }}"
+                                            placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>抗病性</span><input {% if server_form.errors.Gdisease %}class="input-error"{% endif %}
+                                           type="text" name="Gdisease" value="{{ server.Gdisease }}"
+                                           placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>易感病型</span><input {% if server_form.errors.predisposingType %}class="input-error"{% endif %}
+                                            type="text" name="predisposingType" value="{{ server.predisposingType }}"
+                                            placeholder="不超过50个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>*根系类型</span>
+                    <select name="rootType" {% if server_form.errors.rootType %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="直根系" {% ifequal server.rootType '直根系' %}selected{% endifequal %}>直根系</option>
+                        <option value="须根系" {% ifequal server.rootType '须根系' %}selected{% endifequal %}>须根系</option>
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span>*茎状</span>
+                    <select name="stem" {% if server_form.errors.stem %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="直立茎" {% ifequal server.stem '直立茎' %}selected{% endifequal %}>直立茎</option>
+                        <option value="斜生茎" {% ifequal server.stem '斜生茎' %}selected{% endifequal %}>斜生茎</option>
+                        <option value="匍匐茎" {% ifequal server.stem '匍匐茎' %}selected{% endifequal %}>匍匐茎</option>
+                        <option value="缠绕茎" {% ifequal server.stem '缠绕茎' %}selected{% endifequal %}>缠绕茎</option>
+                        <option value="平卧茎" {% ifequal server.stem '平卧茎' %}selected{% endifequal %}>平卧茎</option>
+                    </select>
+                </div>
+                <div class="form-list">
+                    <span>*地下茎</span>
+                    <select name="understem" {% if server_form.errors.understem %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="根状茎" {% ifequal server.understem '根状茎' %}selected{% endifequal %}>根状茎</option>
+                        <option value="块茎" {% ifequal server.understem '块茎' %}selected{% endifequal %}>块茎</option>
+                        <option value="球茎" {% ifequal server.understem '球茎' %}selected{% endifequal %}>球茎</option>
+                        <option value="鳞茎" {% ifequal server.understem '鳞茎' %}selected{% endifequal %}>鳞茎</option>
+                    </select>
+                </div>
+                <div class="form-list">
+                    <span>*叶的类型</span>
+                    <select name="leafType" {% if server_form.errors.leafType %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="单叶" {% ifequal server.leafType '单叶' %}selected{% endifequal %}>单叶</option>
+                        <option value="三出复叶" {% ifequal server.leafType '三出复叶' %}selected{% endifequal %}>三出复叶</option>
+                        <option value="掌状复叶" {% ifequal server.leafType '掌状复叶' %}selected{% endifequal %}>掌状复叶</option>
+                        <option value="单数羽状复叶" {% ifequal server.leafType '单数羽状复叶' %}selected{% endifequal %}>单数羽状复叶
+                        </option>
+                        <option value="双数羽状复叶" {% ifequal server.leafType '双数羽状复叶' %}selected{% endifequal %}>双数羽状复叶
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span>*叶序</span>
+                    <select name="phyllotaxis" {% if server_form.errors.phyllotaxis %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="互生" {% ifequal server.phyllotaxis '互生' %}selected{% endifequal %}>互生</option>
+                        <option value="对生" {% ifequal server.phyllotaxis '对生' %}selected{% endifequal %}>对生</option>
+                        <option value="轮生" {% ifequal server.phyllotaxis '轮生' %}selected{% endifequal %}>轮生</option>
+                        <option value="簇生" {% ifequal server.phyllotaxis '簇生' %}selected{% endifequal %}>簇生</option>
+                    </select>
+                </div>
+                <div class="form-list">
+                    <span>*脉序</span>
+                    <select name="vein" {% if server_form.errors.vein %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="羽状脉" {% ifequal server.vein '羽状脉' %}selected{% endifequal %}>羽状脉</option>
+                        <option value="掌状脉" {% ifequal server.vein '掌状脉' %}selected{% endifequal %}>掌状脉</option>
+                        <option value="掌状三出脉" {% ifequal server.vein '掌状三出脉' %}selected{% endifequal %}>掌状三出脉</option>
+                        <option value="离基三出脉" {% ifequal server.vein '离基三出脉' %}selected{% endifequal %}>离基三出脉</option>
+                        <option value="平行脉" {% ifequal server.vein '平行脉' %}selected{% endifequal %}>平行脉</option>
+                        <option value="弧形脉" {% ifequal server.vein '弧形脉' %}selected{% endifequal %}>弧形脉</option>
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span>*叶片形状</span>
+                    <select name="leafShape" {% if server_form.errors.leafShape %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="针形" {% ifequal server.leafShape '针形' %}selected{% endifequal %}>针形</option>
+                        <option value="剑形" {% ifequal server.leafShape '剑形' %}selected{% endifequal %}>剑形</option>
+                        <option value="条形" {% ifequal server.leafShape '条形' %}selected{% endifequal %}>条形</option>
+                        <option value="心形" {% ifequal server.leafShape '心形' %}selected{% endifequal %}>心形</option>
+                        <option value="卵形" {% ifequal server.leafShape '卵形' %}selected{% endifequal %}>卵形</option>
+                        <option value="扇形" {% ifequal server.leafShape '扇形' %}selected{% endifequal %}>扇形</option>
+                        <option value="其他" {% ifequal server.leafShape '其他' %}selected{% endifequal %}>可以增加类型</option>
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span>*花序</span>
+                    <select name="anthotaxy" {% if server_form.errors.anthotaxy %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="总状花序" {% ifequal server.anthotaxy '总状花序' %}selected{% endifequal %}>总状花序</option>
+                        <option value="穗状花序" {% ifequal server.anthotaxy '穗状花序' %}selected{% endifequal %}>穗状花序</option>
+                        <option value="葇荑花序" {% ifequal server.anthotaxy '葇荑花序' %}selected{% endifequal %}>葇荑花序</option>
+                        <option value="伞房花序" {% ifequal server.anthotaxy '伞房花序' %}selected{% endifequal %}>伞房花序</option>
+                        <option value="头状花序" {% ifequal server.anthotaxy '头状花序' %}selected{% endifequal %}>头状花序</option>
+                        <option value="其他" {% ifequal server.anthotaxy '其他' %}selected{% endifequal %}>可以增加类型</option>
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span>*果实类型</span>
+                    <select name="fruitType" {% if server_form.errors.fruitType %}class="input-error"{% endif %}>
+                        <option style="display: none;" disabled selected>请选择</option>
+                        <option value="聚合果" {% ifequal server.fruitType '聚合果' %} selected{% endifequal %}>聚合果</option>
+                        <option value="聚花果" {% ifequal server.fruitType '聚花果' %} selected{% endifequal %}>聚花果</option>
+                        <option value="荚果" {% ifequal server.fruitType '荚果' %} selected{% endifequal %}>荚果</option>
+                        <option value="瘦果" {% ifequal server.fruitType '瘦果' %} selected{% endifequal %}>瘦果</option>
+                        <option value="其他" {% ifequal server.fruitType '其他' %} selected{% endifequal %}>可以增加类型</option>
+                    </select>
+                </div>
+
+
+                <div class="form-list">
+                    <span>存放地址</span><input {% if server_form.errors.ipaddress %}class="input-error"{% endif %}
+                                            type="text" name="ipaddress" value="{{ server.ipaddress }}"
+                                            placeholder="不超过100个字符"/>
+                </div>
+                <div class="form-list">
+                    <span>相关信息描述</span><input {% if server_form.errors.description %}class="input-error"{% endif %}
+                                              type="text" name="description" value="{{ server.description }}"
+                                              placeholder="不超过50个字符"/>
+                </div>
+
+                <div class="form-list">
+                    <span>种子现存重量</span><input {% if server_form.errors.zcnumber %}class="input-error"{% endif %}
+                                              type="text" name="zcnumber" value="{{ server.zcnumber }}"
+                                              placeholder="不超过50个字符"/>
+                </div>
+
+                <div class="form-list">
+                    <span>*管理人员</span>
+                    <select name="owner">
+                        <option value="0" {% if not server.owner.id %}selected{% endif %}>空</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}"
+                                    {% ifequal server.owner.id user.id %}selected{% endifequal %}>{{ user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-list">
+                    <span>*所在状况</span>
+                    <select name="undernet" {% if server_form.errors.undernet %}class="input-error"{% endif %}>
+                        <option value="办公" {% ifequal server.undernet '办公' %}selected{% endifequal %}>办公</option>
+                        <option value="生产" {% ifequal server.undernet '生产' %}selected{% endifequal %}>生产</option>
+                        <option value="闲置" {% ifequal server.undernet '闲置' %}selected{% endifequal %}>闲置</option>
+                    </select>
+                </div>
+
+                <div class="form-list">
+                    <span class="comment">备注</span><textarea
+                        class="textarea {% if server_form.errors.comment %}input-error{% endif %}" name="comment"
+                        placeholder="不超过300个字符">{{ server.comment }}</textarea>
+                </div>
+                {% if msg %}
+                    <div class="error">{{ msg }}</div>
+                {% endif %}
+                <div style="clear:both"></div>
+                <div class="form-list">
+                    <input class="form-button" type="submit" value="保存"/>
+                </div>
+                <div class="form-list">
+                    <button class="form-button" type="button" onclick="btn_cancel()">取消</button>
+                </div>
+                <div class="form-list">
+                    <button class="form-button form-button-del" type="button" onclick="btn_delete()">删除</button>
+                </div>
+                <div class="form-list">
+                    <button class="form-button" type="button" onclick="btn_QRcode()">制作二维码</button>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    {% endif %}
+    <div class="content">
+        <a name="hist"></a>
+        <p>种子历史变动记录</p>
+        <table class="table-list">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>种子类型</th>
+                <th>种子编号</th>
+
+                <th>种子名称</th>
+                <th>种中文名</th>
+                <!--                    <th>种拉丁名</th>-->
+                <th>属中文名</th>
+                <!--                    <th>属拉丁名</th>-->
+                <th>科中文名</th>
+                <!--                    <th>科拉丁名</th>-->
+                <th>采集年份</th>
+                <th>采集地址</th>
+
+                <th>抗旱性</th>
+                <th>抗寒性</th>
+                <th>耐盐性</th>
+                <th>耐霜冻性</th>
+                <th>耐热性性</th>
+                <th>抗虫害性</th>
+                <th>抗病性</th>
+                <th>易感病性</th>
+                <th>根系类性</th>
+
+                <th>茎状</th>
+                <th>地下茎</th>
+                <th>叶的类型</th>
+                <th>叶序</th>
+                <th>脉序</th>
+                <th>叶片形状</th>
+                <th>花序</th>
+                <th>果实类型</th>
+
+                <!--                    <th>是否有父代</th>-->
+                <!--                    <th>父代信息</th>-->
+                <!--                    <th>是否有子代</th>-->
+                <!--                    <th>子代信息</th>-->
+
+                <th>存放地址</th>
+                <th>相关信息描述</th>
+
+                <th>种子现存重量</th>
+
+                <th>管理人员</th>
+                <th>所在状况</th>
+
+                <th>备注</th>
+                <th>修改时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for server in p_server_hiss.object_list %}
+                <tr>
+                    <td>{{ forloop.counter|add:start }}</td>
+                    <td>{{ server.Gtype }}</td>
+                    <td>{{ server.id }}</td>
+                    <td>{{ server.Gnumber }}</td>
+                    <td>{{ server.Gname }}</td>
+                    <!--                        <td>{{ server.Gnamel }}</td>-->
+                    <td>{{ server.Gz }}</td>
+                    <!--                        <td>{{ server.Gzl }}</td>-->
+                    <td>{{ server.Gs }}</td>
+                    <!--                        <td>{{ server.Gsl }}</td>-->
+                    <td>{{ server.Gke }}</td>
+                    <!--                        <td>{{ server.Gkel }}</td>-->
+                    <td>{{ server.Gyear }}</td>
+                    <td>{{ server.Gaddress }}</td>
+
+                    <td>{{ server.Gdrought }}</td>
+                    <td>{{ server.Gcold }}</td>
+                    <td>{{ server.Gsalt }}</td>
+                    <td>{{ server.Gfrost }}</td>
+                    <td>{{ server.Gheat }}</td>
+                    <td>{{ server.Ginseck }}</td>
+                    <td>{{ server.Gdisease }}</td>
+                    <td>{{ server.predisposingType }}</td>
+                    <td>{{ server.rootType }}</td>
+                    <td>{{ server.stem }}</td>
+                    <td>{{ server.understem }}</td>
+                    <td>{{ server.leafType }}</td>
+                    <td>{{ server.phyllotaxis }}</td>
+                    <td>{{ server.vein }}</td>
+                    <td>{{ server.leafShape }}</td>
+                    <td>{{ server.anthotaxy }}</td>
+                    <td>{{ server.fruitType }}</td>
+
+
+                    <td>{{ server.ipaddress }}</td>
+                    <td>{{ server.description }}</td>
+                    <td>{{ server.zcnumber }}</td>
+                    <td>{{ server.owner.username }}</td>
+                    <td>{{ server.undernet }}</td>
+                    <td>
+                        <div class="more-text">{{ server.comment }}</div>
+                    </td>
+                    <td>{{ server.modify_time|date:"Y-m-d H:i:s" }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="page">
+            <ul class="pagination">
+                {% if p_server_hiss.has_previous %}
+                    <li><a href="?{{ p_server_hiss.previous_page_number.querystring }}#hist">&laquo;</a></li>
+                {% endif %}
+                {% for page in p_server_hiss.pages %}
+                    {% if page %}
+                        {% ifequal page p_server_hiss.number %}
+                            <li class="active"><a href="?{{ page.querystring }}#hist">{{ page }}</a></li>
+                        {% else %}
+                            <li><a href="?{{ page.querystring }}#hist">{{ page }}</a></li>
+                        {% endifequal %}
+                    {% else %}
+                        <li>...</li>
+                    {% endif %}
+                {% endfor %}
+                {% if p_server_hiss.has_next %}
+                    <li><a href="?{{ p_server_hiss.next_page_number.querystring }}#hist">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block custome_js %}
+    <script>
+        function btn_cancel() {
+            location.href = "{% url 'servers:server_list' %}";
+        }
+
+        function btn_delete() {
+            var server_id = document.getElementById("server_id").value;
+            var url = "{% url 'servers:server_delete' 0 %}";
+            var conf = confirm("确定删掉该条数据？");
+            if (conf) {
+                location.href = url.replace('0', server_id);
+            }
+        }
+
+        function btn_QRcode(){
+            {#var server_id = document.getElementById("server_id").value;#}
+            location.href = "{% url 'servers:server_qrcode' server.id %}";
+
+        }
+
+        var sidebar = document.getElementById("sidebar");
+        var content_height = document.body.scrollHeight > window.innerHeight ? document.body.scrollHeight - 48 : window.innerHeight - 48;
+        sidebar.style.height = content_height + 'px';
+    </script>
+{% endblock %}

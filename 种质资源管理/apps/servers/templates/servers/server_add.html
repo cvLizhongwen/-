@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}种子信息管理 - 添加种子信息{% endblock %}
+{% block custome_css %}
+    <link rel="stylesheet" href="{% static 'servers/css/server-add.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="content">
+        <p class="content-note1">添加种子信息<span class="content-note2"> (标注为*为必填项)</span></p>
+        <div style="clear:both"></div>
+        <form class="form-table" action="{% url 'servers:server_add' %}" method="post">
+            <div class="form-list">
+                <span>*种子类型</span>
+                <select {% if server_form.errors.Gtype %}class="input-error"{% endif %} name="Gtype">
+                    <option style="display: none;" disabled selected>请选择</option>
+                    {% for server_type in server_types %}
+                        <option value="{{ server_type.id }}">{{ server_type.Gtype }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+<!--{#            <div class="form-list">#}-->
+<!--{#                <span>种子编号</span><input {% if server_form.errors.zcmodel %}class="input-error"{% endif %} type="text" name="zcmodel" placeholder="不超过50个字符"/>#}-->
+<!--{#            </div>#}-->
+            <div class="form-list">
+                <span>种子编号</span><input {% if server_form.errors.Gnumber %}class="input-error"{% endif %} type="text" name="Gnumber" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>种子名称</span><input {% if server_form.errors.Gname %}class="input-error"{% endif %} type="text" name="Gname" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>种名</span><input {% if server_form.errors.Gz %}class="input-error"{% endif %} type="text" name="Gz" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>属名</span><input {% if server_form.errors.Gs %}class="input-error"{% endif %} type="text" name="Gs" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>科名</span><input {% if server_form.errors.Gke %}class="input-error"{% endif %} type="text" name="Gke" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>采集时间</span><input {% if server_form.errors.Gyear %}class="input-error"{% endif %} type="text" name="Gyear" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>采集地</span><input {% if server_form.errors.Gaddress %}class="input-error"{% endif %} type="text" name="Gaddress" placeholder="不超过50个字符"/>
+            </div>
+
+            <div class="form-list">
+                <span>抗旱性</span><input {% if server_form.errors.Gdrought %}class="input-error"{% endif %} type="text" name="Gdrought" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>抗寒性</span><input {% if server_form.errors.Gcold %}class="input-error"{% endif %} type="text" name="Gcold" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>耐盐性</span><input {% if server_form.errors.Gsalt %}class="input-error"{% endif %} type="text" name="Gsalt" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>耐霜冻性</span><input {% if server_form.errors.Gfrost %}class="input-error"{% endif %} type="text" name="Gfrost" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>耐热性</span><input {% if server_form.errors.Gheat %}class="input-error"{% endif %} type="text" name="Gheat" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>抗虫害性</span><input {% if server_form.errors.Ginseck %}class="input-error"{% endif %} type="text" name="Ginseck" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>抗病性</span><input {% if server_form.errors.Gdisease %}class="input-error"{% endif %} type="text" name="Gdisease" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>易感病型</span><input {% if server_form.errors.predisposingType %}class="input-error"{% endif %} type="text" name="predisposingType" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>*根系类型</span>
+                <select name="rootType" {% if server_form.errors.rootType %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="直根系">直根系</option>
+                    <option value="须根系">须根系</option>
+                </select>
+            </div>
+
+            <div class="form-list">
+                <span>*茎状</span>
+                <select name="stem" {% if server_form.errors.stem %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="直立茎">直立茎</option>
+                    <option value="斜生茎">斜生茎</option>
+                    <option value="匍匐茎">匍匐茎</option>
+                    <option value="缠绕茎">缠绕茎</option>
+                    <option value="平卧茎">平卧茎</option>
+                </select>
+            </div>
+            <div class="form-list">
+                <span>*地下茎</span>
+                <select name="understem" {% if server_form.errors.understem %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="根状茎">根状茎</option>
+                    <option value="块茎">块茎</option>
+                    <option value="球茎">球茎</option>
+                    <option value="鳞茎">鳞茎</option>
+                </select>
+            </div>
+            <div class="form-list">
+                <span>*叶的类型</span>
+                <select name="leafType" {% if server_form.errors.leafType %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="单叶">单叶</option>
+                    <option value="三出复叶">三出复叶</option>
+                    <option value="掌状复叶">掌状复叶</option>
+                    <option value="单数羽状复叶">单数羽状复叶</option>
+                    <option value="双数羽状复叶">双数羽状复叶</option>
+                </select>
+            </div>
+
+            <div class="form-list">
+                <span>*叶序</span>
+                <select name="phyllotaxis" {% if server_form.errors.phyllotaxis %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="互生">互生</option>
+                    <option value="对生">对生</option>
+                    <option value="轮生">轮生</option>
+                    <option value="簇生">簇生</option>
+                </select>
+            </div>
+            <div class="form-list">
+                <span>*脉序</span>
+                <select name="vein" {% if server_form.errors.vein %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="羽状脉">羽状脉</option>
+                    <option value="掌状脉">掌状脉</option>
+                    <option value="掌状三出脉">掌状三出脉</option>
+                    <option value="离基三出脉">离基三出脉</option>
+                    <option value="平行脉">平行脉</option>
+                    <option value="弧形脉">弧形脉</option>
+                </select>
+            </div>
+
+            <div class="form-list">
+                <span>*叶片形状</span>
+                <select name="leafShape" {% if server_form.errors.leafShape %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="针形">针形</option>
+                    <option value="剑形">剑形</option>
+                    <option value="条形">条形</option>
+                    <option value="心形">心形</option>
+                    <option value="卵形">卵形</option>
+                    <option value="扇形">扇形</option>
+                    <option value="其他">可以增加类型</option>
+                </select>
+            </div>
+
+            <div class="form-list">
+                <span>*花序</span>
+                <select name="anthotaxy" {% if server_form.errors.anthotaxy %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="总状花序">总状花序</option>
+                    <option value="穗状花序">穗状花序</option>
+                    <option value="葇荑花序">葇荑花序</option>
+                    <option value="伞房花序">伞房花序</option>
+                    <option value="头状花序">头状花序</option>
+                    <option value="其他">可以增加类型</option>
+                </select>
+            </div>
+            <div class="form-list">
+                <span>*果实类型</span>
+                <select name="fruitType" {% if server_form.errors.fruitType %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="总状花序">聚合果</option>
+                    <option value="聚花果">聚花果</option>
+                    <option value="荚果">荚果</option>
+                    <option value="瘦果">瘦果</option>
+                    <option value="其他">可以增加类型</option>
+                </select>
+            </div>
+
+
+            <div class="form-list">
+                <span>存放地址</span><input {% if server_form.errors.ipaddress %}class="input-error"{% endif %} type="text" name="ipaddress" placeholder="不超过100个字符"/>
+            </div>
+            <div class="form-list">
+                <span>相关信息描述</span><input {% if server_form.errors.description %}class="input-error"{% endif %} type="text" name="description" placeholder="不超过50个字符"/>
+            </div>
+            <div class="form-list">
+                <span>种子现存重量</span><input {% if server_form.errors.zcnumber %}class="input-error"{% endif %} type="text" name="zcnumber" placeholder="不超过50个字符"/>
+            </div>
+
+            <div class="form-list">
+                <span>*管理人员</span>
+                <select {% if server_form.errors.owner %}class="input-error"{% endif %} name="owner">
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="0">无</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-list">
+                <span>*所在状况</span>
+                <select name="undernet" {% if server_form.errors.undernet %}class="input-error"{% endif %}>
+                    <option style="display: none;" disabled selected>请选择</option>
+                    <option value="办公">办公</option>
+                    <option value="生产">生产</option>
+                    <option value="闲置">闲置</option>
+                </select>
+            </div>
+<!--{#            <div class="form-list">#}-->
+<!--{#                <span>保修期</span><input {% if server_form.errors.guartime %}class="input-error"{% endif %} type="text" name="guartime" placeholder="格式示例:年-月-日,如2018-8-8"/>#}-->
+<!--{#            </div>#}-->
+<!--            <div class="form-list">-->
+<!--               <span>科中文名</span><input {% if server_form.errors.brand %}class="input-error"{% endif %} type="text" name="brand" placeholder="不超过50个字符"/>-->
+<!--            </div>-->
+             <div class="form-list">
+                <span class="comment">备注</span><textarea class="textarea {% if server_form.errors.comment %}input-error{% endif %}" name="comment" placeholder="不超过300个字符"></textarea>
+            </div>
+            {% if msg %}
+                <div class="error">{{ msg }}</div>
+            {% endif %}
+            <div style="clear:both"></div>
+            <div class="form-list">
+                <input class="form-button" type="submit"/>
+            </div>
+            <div class="form-list">
+                 <button class="form-button" type="button" onclick="btn_cancel()">取消</button>
+            </div>
+            {% csrf_token %}
+         </form>
+
+    </div>
+{% endblock %}
+{% block custome_js %}
+    <script>
+        function btn_cancel() {
+            location.href = "{% url 'servers:server_list' %}";
+        }
+    </script>
+{% endblock %}
